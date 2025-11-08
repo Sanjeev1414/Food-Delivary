@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order History - SS Food Court</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="restaurant.html" class="logo">🍔 SS Food Court</a>
+            <nav class="nav-links">
+                <a href="restaurant.html">Home</a>
+                <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+                <a href="orderHistory.html">Orders</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 style="margin: 30px 0; color: #333;">Order History</h1>
+        
+        <div id="orders-container">
+            <!-- Orders will be rendered here -->
+        </div>
+
+        <div id="empty-orders" class="empty-state" style="display: none;">
+            <div class="empty-state-icon">📦</div>
+            <h2>No orders yet</h2>
+            <p>Start ordering delicious food to see your order history here!</p>
+            <a href="restaurant.html" class="btn-primary" style="display: inline-block; margin-top: 20px; text-decoration: none;">Browse Restaurants</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Sample order data (will be replaced by actual orders from localStorage)
+        const sampleOrders = [
+            {
+                orderId: 'ORD1234567890',
+                date: '2024-01-15 14:30',
+                items: [
+                    { name: 'Butter Chicken', quantity: 2, price: 250 },
+                    { name: 'Naan Bread', quantity: 4, price: 50 }
+                ],
+                total: 700,
+                status: 'Delivered'
+            },
+            {
+                orderId: 'ORD1234567891',
+                date: '2024-01-10 19:45',
+                items: [
+                    { name: 'Margherita Pizza', quantity: 1, price: 300 },
+                    { name: 'Garlic Bread', quantity: 2, price: 120 }
+                ],
+                total: 640,
+                status: 'Delivered'
+            },
+            {
+                orderId: 'ORD1234567892',
+                date: '2024-01-05 12:20',
+                items: [
+                    { name: 'Classic Burger', quantity: 2, price: 150 },
+                    { name: 'French Fries', quantity: 2, price: 80 }
+                ],
+                total: 580,
+                status: 'Delivered'
+            },
+            {
+                orderId: 'ORD1234567893',
+                date: '2024-01-01 20:15',
+                items: [
+                    { name: 'Salmon Sushi', quantity: 1, price: 400 },
+                    { name: 'Miso Soup', quantity: 2, price: 120 }
+                ],
+                total: 760,
+                status: 'Delivered'
+            }
+        ];
+
+        function renderOrders() {
+            let orderHistory = JSON.parse(localStorage.getItem('orderHistory')) || [];
+            
+            // If no orders in localStorage, use sample data
+            if (orderHistory.length === 0) {
+                orderHistory = sampleOrders;
+            }
+
+            const ordersContainer = document.getElementById('orders-container');
+            const emptyOrders = document.getElementById('empty-orders');
+
+            if (orderHistory.length === 0) {
+                ordersContainer.style.display = 'none';
+                emptyOrders.style.display = 'block';
+                return;
+            }
+
+            ordersContainer.style.display = 'block';
+            emptyOrders.style.display = 'none';
+            ordersContainer.innerHTML = '';
+
+            orderHistory.forEach(order => {
+                const orderCard = document.createElement('div');
+                orderCard.className = 'order-card';
+                
+                const itemsList = order.items.map(item => 
+                    `<div class="order-item">
+                        <span>${item.name} x ${item.quantity}</span>
+                        <span>₹${item.price * item.quantity}</span>
+                    </div>`
+                ).join('');
+
+                orderCard.innerHTML = `
+                    <div class="order-header">
+                        <div>
+                            <div class="order-id">${order.orderId}</div>
+                            <div class="order-date">${order.date}</div>
+                        </div>
+                        <div class="order-status">${order.status}</div>
+                    </div>
+                    <div class="order-items">
+                        ${itemsList}
+                    </div>
+                    <div class="order-total">
+                        <span>Total</span>
+                        <span>₹${order.total}</span>
+                    </div>
+                `;
+                ordersContainer.appendChild(orderCard);
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            renderOrders();
+        });
+    </script>
+</body>
+</html>
+

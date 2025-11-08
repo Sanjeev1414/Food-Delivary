@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - FoodD</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="restaurant.html" class="logo">🍔 SS Food Court</a>
+            <nav class="nav-links">
+                <a href="restaurant.html">Home</a>
+                <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+                <a href="orderHistory.html">Orders</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="form-container">
+        <morquee><h2>Wel-Come to SS Food Court</h2></morquee>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required placeholder="Enter your password">
+            </div>
+            <button type="submit" class="btn-primary">Login</button>
+        </form>
+        <div class="link-text">
+            Don't have an account? <a href="signup.html">Sign Up</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Simple validation - in real app, this would connect to backend
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            
+            if (email && password) {
+                // Store login state (simple - in real app use proper auth)
+                localStorage.setItem('isLoggedIn', 'true');
+                window.location.href = 'restaurant.html';
+            }
+        });
+    </script>
+</body>
+</html>
+

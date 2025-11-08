@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu - SS Food Court</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="restaurant.html" class="logo">🍔 SS Food Court</a>
+            <nav class="nav-links">
+                <a href="restaurant.html">Home</a>
+                <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+                <a href="orderHistory.html">Orders</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <div id="restaurant-header" style="margin-bottom: 30px;">
+            <h1 id="restaurant-name" style="color: #333; margin-bottom: 10px;">Restaurant Menu</h1>
+            <p id="restaurant-info" style="color: #666;">Loading menu...</p>
+        </div>
+
+        <div id="menu-items">
+            <!-- Menu items will be loaded here -->
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // Restaurant data
+        const restaurants = {
+            1: {
+                name: 'Spice Garden',
+                info: 'North Indian, Chinese, Fast Food • ⭐ 4.2 • ⏱️ 30-35 mins',
+                items: [
+                    { id: 101, name: 'Butter Chicken', description: 'Creamy tomato-based curry with tender chicken pieces', price: 250, image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=300&h=300&fit=crop' },
+                    { id: 102, name: 'Paneer Tikka', description: 'Grilled cottage cheese marinated in spices', price: 180, image: 'https://images.unsplash.com/photo-1563379091339-03246963d96a?w=300&h=300&fit=crop' },
+                    { id: 103, name: 'Biryani', description: 'Fragrant basmati rice with spiced chicken', price: 220, image: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=300&h=300&fit=crop' },
+                    { id: 104, name: 'Naan Bread', description: 'Freshly baked tandoori naan', price: 50, image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=300&h=300&fit=crop' },
+                    { id: 105, name: 'Chicken Curry', description: 'Spicy chicken curry with onions and tomatoes', price: 200, image: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=300&h=300&fit=crop' }
+                ]
+            },
+            2: {
+                name: 'Pizza Paradise',
+                info: 'Italian, Pizza, Pasta • ⭐ 4.5 • ⏱️ 25-30 mins',
+                items: [
+                    { id: 201, name: 'Margherita Pizza', description: 'Classic pizza with tomato, mozzarella, and basil', price: 300, image: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?w=300&h=300&fit=crop' },
+                    { id: 202, name: 'Pepperoni Pizza', description: 'Spicy pepperoni with mozzarella cheese', price: 350, image: 'https://images.unsplash.com/photo-1628840042765-356cda07504e?w=300&h=300&fit=crop' },
+                    { id: 203, name: 'Veggie Supreme', description: 'Loaded with fresh vegetables and cheese', price: 320, image: 'https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?w=300&h=300&fit=crop' },
+                    { id: 204, name: 'Pasta Carbonara', description: 'Creamy pasta with bacon and parmesan', price: 280, image: 'https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?w=300&h=300&fit=crop' },
+                    { id: 205, name: 'Garlic Bread', description: 'Crispy bread with garlic butter', price: 120, image: 'https://images.unsplash.com/photo-1571997478779-2adcbbe9ab2f?w=300&h=300&fit=crop' }
+                ]
+            },
+            3: {
+                name: 'Burger King',
+                info: 'American, Burgers, Fast Food • ⭐ 4.3 • ⏱️ 20-25 mins',
+                items: [
+                    { id: 301, name: 'Classic Burger', description: 'Juicy beef patty with lettuce, tomato, and special sauce', price: 150, image: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=300&h=300&fit=crop' },
+                    { id: 302, name: 'Cheese Burger', description: 'Classic burger with melted cheese', price: 170, image: 'https://images.unsplash.com/photo-1550547660-d9450f859349?w=300&h=300&fit=crop' },
+                    { id: 303, name: 'Chicken Burger', description: 'Crispy chicken patty with mayo and veggies', price: 160, image: 'https://images.unsplash.com/photo-1606755962773-d324e166a853?w=300&h=300&fit=crop' },
+                    { id: 304, name: 'French Fries', description: 'Crispy golden fries with ketchup', price: 80, image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=300&h=300&fit=crop' },
+                    { id: 305, name: 'Onion Rings', description: 'Crispy battered onion rings', price: 100, image: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=300&h=300&fit=crop' }
+                ]
+            },
+            4: {
+                name: 'Sushi House',
+                info: 'Japanese, Sushi, Asian • ⭐ 4.6 • ⏱️ 35-40 mins',
+                items: [
+                    { id: 401, name: 'Salmon Sushi', description: 'Fresh salmon with sushi rice', price: 400, image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=300&h=300&fit=crop' },
+                    { id: 402, name: 'California Roll', description: 'Crab, avocado, and cucumber roll', price: 350, image: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=300&h=300&fit=crop' },
+                    { id: 403, name: 'Dragon Roll', description: 'Eel and cucumber with avocado', price: 450, image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=300&h=300&fit=crop' },
+                    { id: 404, name: 'Miso Soup', description: 'Traditional Japanese soup', price: 120, image: 'https://images.unsplash.com/photo-1611143669185-af224c5e3252?w=300&h=300&fit=crop' },
+                    { id: 405, name: 'Tempura', description: 'Crispy fried vegetables and shrimp', price: 280, image: 'https://images.unsplash.com/photo-1579584425555-c3ce17fd4351?w=300&h=300&fit=crop' }
+                ]
+            },
+            5: {
+                name: 'Sweet Dreams',
+                info: 'Desserts, Ice Cream, Beverages • ⭐ 4.4 • ⏱️ 15-20 mins',
+                items: [
+                    { id: 501, name: 'Chocolate Cake', description: 'Rich chocolate cake with frosting', price: 180, image: 'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=300&h=300&fit=crop' },
+                    { id: 502, name: 'Ice Cream Sundae', description: 'Vanilla ice cream with chocolate sauce', price: 150, image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=300&h=300&fit=crop' },
+                    { id: 503, name: 'Brownie', description: 'Fudgy chocolate brownie', price: 120, image: 'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=300&h=300&fit=crop' },
+                    { id: 504, name: 'Milkshake', description: 'Thick and creamy milkshake', price: 100, image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?w=300&h=300&fit=crop' },
+                    { id: 505, name: 'Donuts', description: 'Assorted glazed donuts', price: 80, image: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?w=300&h=300&fit=crop' }
+                ]
+            },
+            6: {
+                name: 'Coastal Flavors',
+                info: 'South Indian, Seafood, Biryani • ⭐ 4.1 • ⏱️ 30-35 mins',
+                items: [
+                    { id: 601, name: 'Fish Curry', description: 'Spicy fish curry with coconut', price: 280, image: 'https://images.unsplash.com/photo-1544943910-04c54e3a9a5d?w=300&h=300&fit=crop' },
+                    { id: 602, name: 'Chicken Biryani', description: 'Fragrant rice with spiced chicken', price: 250, image: 'https://images.unsplash.com/photo-1589302168068-964664d93dc0?w=300&h=300&fit=crop' },
+                    { id: 603, name: 'Dosa', description: 'Crispy South Indian crepe', price: 80, image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=300&h=300&fit=crop' },
+                    { id: 604, name: 'Idli Sambar', description: 'Steamed rice cakes with lentil curry', price: 60, image: 'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=300&h=300&fit=crop' },
+                    { id: 605, name: 'Prawn Curry', description: 'Spicy prawn curry with coconut milk', price: 320, image: 'https://images.unsplash.com/photo-1544943910-04c54e3a9a9d?w=300&h=300&fit=crop' }
+                ]
+            }
+        };
+
+        // Get restaurant ID from URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const restaurantId = parseInt(urlParams.get('restaurant')) || 1;
+        const restaurant = restaurants[restaurantId];
+
+        if (restaurant) {
+            document.getElementById('restaurant-name').textContent = restaurant.name;
+            document.getElementById('restaurant-info').textContent = restaurant.info;
+
+            const menuContainer = document.getElementById('menu-items');
+            restaurant.items.forEach(item => {
+                const menuItem = document.createElement('div');
+                menuItem.className = 'card menu-item';
+                menuItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" class="menu-item-image">
+                    <div class="menu-item-info">
+                        <h4>${item.name}</h4>
+                        <p>${item.description}</p>
+                        <div class="price">₹${item.price}</div>
+                        <button class="add-btn" onclick="addToCart(${item.id}, '${item.name}', ${item.price}, '${item.image}')">
+                            Add to Cart
+                        </button>
+                    </div>
+                `;
+                menuContainer.appendChild(menuItem);
+            });
+        }
+    </script>
+</body>
+</html>
+

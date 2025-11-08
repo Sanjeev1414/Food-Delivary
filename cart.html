@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart -  SS Food Court</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <a href="restaurant.html" class="logo">🍔 SS Food Court</a>
+            <nav class="nav-links">
+                <a href="restaurant.html">Home</a>
+                <a href="cart.html">Cart (<span id="cart-count">0</span>)</a>
+                <a href="orderHistory.html">Orders</a>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <h1 style="margin: 30px 0; color: #333;">Your Cart</h1>
+        
+        <div id="cart-items-container">
+            <!-- Cart items will be rendered here -->
+        </div>
+
+        <div id="empty-cart" class="empty-state" style="display: none;">
+            <div class="empty-state-icon">🛒</div>
+            <h2>Your cart is empty</h2>
+            <p>Add some delicious items to get started!</p>
+            <a href="restaurant.html" class="btn-primary" style="display: inline-block; margin-top: 20px; text-decoration: none;">Browse Restaurants</a>
+        </div>
+
+        <div id="cart-summary-container" class="cart-summary" style="display: none;">
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span id="subtotal">₹0</span>
+            </div>
+            <div class="summary-row">
+                <span>Delivery Fee</span>
+                <span>₹40</span>
+            </div>
+            <div class="summary-row">
+                <span>Tax</span>
+                <span id="tax">₹0</span>
+            </div>
+            <div class="summary-row total">
+                <span>Total</span>
+                <span id="total">₹0</span>
+            </div>
+            <a href="checkout.html" class="checkout-btn" style="text-decoration: none; display: block; text-align: center;">Proceed to Checkout</a>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        function renderCart() {
+            const cart = JSON.parse(localStorage.getItem('cart')) || [];
+            const cartContainer = document.getElementById('cart-items-container');
+            const emptyCart = document.getElementById('empty-cart');
+            const cartSummary = document.getElementById('cart-summary-container');
+
+            if (cart.length === 0) {
+                cartContainer.style.display = 'none';
+                emptyCart.style.display = 'block';
+                cartSummary.style.display = 'none';
+                return;
+            }
+
+            cartContainer.style.display = 'block';
+            emptyCart.style.display = 'none';
+            cartSummary.style.display = 'block';
+
+            cartContainer.innerHTML = '';
+            cart.forEach(item => {
+                const cartItem = document.createElement('div');
+                cartItem.className = 'card cart-item';
+                cartItem.innerHTML = `
+                    <img src="${item.image}" alt="${item.name}" style="width: 80px; height: 80px; border-radius: 8px; object-fit: cover;">
+                    <div class="cart-item-info">
+                        <h4>${item.name}</h4>
+                        <p>₹${item.price} each</p>
+                    </div>
+                    <div class="quantity-controls">
+                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                        <span class="quantity">${item.quantity}</span>
+                        <button class="quantity-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-weight: bold; font-size: 18px; margin-bottom: 10px;">₹${item.price * item.quantity}</div>
+                        <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
+                    </div>
+                `;
+                cartContainer.appendChild(cartItem);
+            });
+
+            // Update summary
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.05; // 5% tax
+            const deliveryFee = 40;
+            const total = subtotal + tax + deliveryFee;
+
+            document.getElementById('subtotal').textContent = `₹${subtotal}`;
+            document.getElementById('tax').textContent = `₹${Math.round(tax)}`;
+            document.getElementById('total').textContent = `₹${Math.round(total)}`;
+        }
+
+        // Initial render
+        document.addEventListener('DOMContentLoaded', function() {
+            renderCart();
+        });
+    </script>
+</body>
+</html>
+
